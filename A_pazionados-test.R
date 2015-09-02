@@ -44,12 +44,11 @@ tags$style(type = "text/css", "html, body {width:100%;height:100%}"),
   )
 
 server <- function(input, output) {
-  df <- read.csv(file = "/Users/featherlite569/Documents/La Pazionado/La Pazionado/Apazionados.csv")
+  df <- read.csv(file = "./Apazionados.csv")
   df <- cbind(df, geocode(as.character(df$City), output = "more")) 
   df$country <- as.factor(df$country)
   df$lon <- as.factor(df$lon)
-  df$dest <- paste("/Users/featherlite569/Documents/La Pazionado/La Pazionado/www/", 
-                   df[,2], str_sub(df$Image, -4), sep = "")
+  df$dest <- paste("./www/", df[,2], str_sub(df$Image, -4), sep = "")
   for(i in df$Image){
     download.file(url = as.character(i), destfile = df[df$Image == i, 25])
   }
