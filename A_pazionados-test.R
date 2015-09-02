@@ -48,6 +48,11 @@ server <- function(input, output) {
   df <- cbind(df, geocode(as.character(df$City), output = "more")) 
   df$country <- as.factor(df$country)
   df$lon <- as.factor(df$lon)
+  df$dest <- paste("/Users/featherlite569/Documents/La Pazionado/La Pazionado/www/", 
+                   df[,2], str_sub(df$Image, -4), sep = "")
+  for(i in df$Image){
+    download.file(url = as.character(i), destfile = df[df$Image == i, 25])
+  }
   
   #INPUTS From categories
   #default should be all 
@@ -82,12 +87,8 @@ output$title <- renderText({
 output$image  <- renderImage({ 
   click <- (input$map_marker_click) 
   long <- as.numeric(click[4])
-  url <- as.character((df[df$lon == long,6]))
-  dest <- paste("/Users/featherlite569/Documents/La Pazionado/La Pazionado/www/", df[df$lon == long,2], str_sub(url, -4), sep = "")
-  download.file(url = url, destfile = dest)
-  list(src = dest,
-       width = 300)
-})
+  list(src = df[df$lon == long,25], width = 300)
+}, deleteFile = FALSE)
 
 output$summary <- renderText({
   click <- (input$map_marker_click) 
