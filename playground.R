@@ -45,3 +45,15 @@ title1$Title
 
 df[,2]
 
+imageOutput
+fluidPage
+img
+
+file.path()
+image
+
+URL <-df[,6]
+dest <- paste("/Users/featherlite569/Documents/La Pazionado/La Pazionado/www/", df$Title, str_sub(df$Image, -4), sep = "")
+dest
+download.file(url = as.character(URL[1]), destfile = dest[1])
+
