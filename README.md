@@ -1,6 +1,7 @@
-# A-Pazionado
-Mapping peace projects across Latin America
+# Apazionado: Mapping peace projects across Latin America
 
-This project is currently a collaboration between Andrea Arzaba and Collin Schwantes. 
-Andrea is a graduate student at Georgetown University in the Latin American Studies department 
-and Collin recently completed his master's degree at the University of Colorado Boulder.
+This is a shiny app that displays peace projects across Latin America and gives a breif introduction to each project in the database. 
+
+Run the A_pazionados-test.R file to see the most up-to-date version of the project. 
+
+
