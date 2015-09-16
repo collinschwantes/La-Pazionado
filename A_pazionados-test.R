@@ -38,6 +38,10 @@ tags$style(type = "text/css", "html, body {width:100%;height:100%}"),
                                               "Mexico" = "mexico",
                                               "Venezuela" = "venezuela")),
                    h2(style = "font-family:Averia Sans Libre; font-weight: 700; color: #FFFFFF;", textOutput(outputId = "title")),
+                  tags$style(type="text/css",
+                             ".shiny-output-error { visibility: hidden; }",
+                             ".shiny-output-error:before { visibility: hidden; }"
+                  ),
                    imageOutput(outputId = "image", height = "75%"),
                    h3(style = "font-family:Averia Sans Libre; font-weight: 400; color: #FFFFFF;", textOutput(outputId = "summary"))
       )               
