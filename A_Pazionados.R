@@ -1,9 +1,9 @@
 library(shiny)
 library(leaflet)
-library(RColorBrewer)
 library(ggplot2)
 library(ggmap)
 library(data.table)
+library(stringr)
 
 ui <- bootstrapPage(
   
@@ -21,7 +21,8 @@ ui <- bootstrapPage(
                    a(style = "color: #abaebf", href = "www.collinschwantes.com", "Collin Schwantes")
                  )
   ),
-  absolutePanel(style = "background-color:rgba(0,0,8,.5); font-family:Averia Sans Libre; font-weight: 600;line-height: 2; color: #FFFFFF;", width = "300px", top = 10, right = 10,
+  absolutePanel(style = "background-color:rgba(0,0,8,.5); font-family:Averia Sans Libre; font-weight: 600;line-height: 2; color: #FFFFFF;",
+                width = "300px", top = 10, right = 10,
                 selectInput(selected = "All",inputId =  "category",label =  "Project Type",
                             choices = list("All" = "All", 
                                            "Art" = "Art", 
@@ -37,18 +38,20 @@ ui <- bootstrapPage(
                                            "Mexico" = "mexico",
                                            "Venezuela" = "venezuela")),
                 h2(style = "font-family:Averia Sans Libre; font-weight: 700; color: #FFFFFF;", textOutput(outputId = "title")),
-                img(src = textOutput(outputId = "image"), width = 300),
+                imageOutput(outputId = "image", height = "75%"),
                 h3(style = "font-family:Averia Sans Libre; font-weight: 400; color: #FFFFFF;", textOutput(outputId = "summary"))
   )               
 )
 
-
-
 server <- function(input, output) {
-  df <- read.csv(file = "/Users/featherlite569/Documents/La Pazionado/La Pazionado/Apazionados.csv")
+  df <- read.csv(file = "./Apazionados.csv")
   df <- cbind(df, geocode(as.character(df$City), output = "more")) 
   df$country <- as.factor(df$country)
   df$lon <- as.factor(df$lon)
+  df$dest <- paste("./www/", df[,2], str_sub(df$Image, -4), sep = "")
+  for(i in df$Image){
+    download.file(url = as.character(i), destfile = df[df$Image == i, 25])
+  }
   
   #INPUTS From categories
   #default should be all 
@@ -80,11 +83,11 @@ server <- function(input, output) {
     obj <- as.character(df[df$lon == long,2]) 
   })
   
-  output$image  <- renderText({ 
+  output$image  <- renderImage({ 
     click <- (input$map_marker_click) 
     long <- as.numeric(click[4])
-    obj <- (df[df$lon == long,6])
-  })
+    list(src = df[df$lon == long,25], width = 300)
+  }, deleteFile = FALSE)
   
   output$summary <- renderText({
     click <- (input$map_marker_click) 
