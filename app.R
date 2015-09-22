@@ -16,30 +16,27 @@ ui <- bootstrapPage(
   leafletOutput("map", width = "100%", height = "100%"),
   # select category and country
   absolutePanel( bottom = 30, left = 20, align = "center",
-                 h1(style = "font-family:Averia Sans Libre; font-weight: 700; color: #e4d89a;","A Pazionados"),
-                 h4(
-                   style = "font-family:Averia Sans Libre; font-weight: 400; color: #abaebf;","a collaboration between"),
-                 h3(  
-                   style = "margin-top: 10px; font-family:Averia Sans Libre; font-weight: 700; color: #abaebf;", 
-                   a(style = "color: #abaebf", href = "www.andreaarzaba.com","Andrea Arzaba"), "and",
-                   a(style = "color: #abaebf", href = "www.collinschwantes.com", "Collin Schwantes")
-                 )
+                 h1(style = "font-family:Averia Sans Libre; font-weight: 700; color: #FFFFFF;","APAZIONADOS"),
+                 h4(style = "font-family:Averia Sans Libre; font-weight: 700; color: #FFFFFF;",
+                   "Mapeamos proyectos de paz en Latinoamérica"),
+                 h4(style = "font-family:Averia Sans Libre; font-weight: 700; color: #e4d89a;",
+                   "Fase I: México")
   ),
   absolutePanel(style = "background-color:rgba(0,0,8,.5); font-family:Averia Sans Libre; font-weight: 600;line-height: 2; color: #FFFFFF;",
                 width = "300px", top = 10, right = 10,
-                selectInput(selected = "All",inputId =  "category",label =  "Project Type",
-                            choices = list("All" = "All", 
-                                           "Art" = "Art", 
-                                           "Community Engagement" = "Community Engagement",
-                                           "Education" = "Education",
-                                           "Media" = "Media",
-                                           "Sports" = "Sports")),
-                selectInput(selected = "All", "country", "Country",
-                            choices = list("All" = "All",
+                selectInput(selected = "All",inputId =  "category",label =  "Categoría",
+                            choices = list("Todo" = "All", 
+                                           "Arte" = "Art", 
+                                           "Comunidad" = "Community Engagement",
+                                           "Educación" = "Education",
+                                           "Medios" = "Media",
+                                           "Deportes" = "Sports")),
+                selectInput(selected = "All", "country", "País",
+                            choices = list("Todo" = "All",
                                            "Ecuador" = "ecuador",
                                            "El Salvador" = "el salvador",
                                            "Guatemala" = "guatemala",
-                                           "Mexico" = "mexico",
+                                           "México" = "mexico",
                                            "Venezuela" = "venezuela")),
                 h2(style = "font-family:Averia Sans Libre; font-weight: 700; color: #FFFFFF;", textOutput(outputId = "title")),
                 tags$style(type="text/css",
@@ -57,9 +54,9 @@ server <- function(input, output) {
   df$country <- as.factor(df$country)
   df$lon <- as.factor(df$lon)
   df$dest <- paste("./www/", df[,2], str_sub(df$Image, -4), sep = "")
-  for(i in df$Image){
-    download.file(url = as.character(i), destfile = df[df$Image == i, 25])
-  }
+  #for(i in df$Image){
+  #  download.file(url = as.character(i), destfile = df[df$Image == i, 25])
+  #}
   
   #INPUTS From categories
   #default should be all 
@@ -76,7 +73,7 @@ server <- function(input, output) {
   
   output$map <- renderLeaflet({
     leaflet(df) %>%  
-      setView(lng = -86.257367, lat = 0, zoom = 3) %>% 
+      setView(lng = -99.257367, lat = 19.47, zoom = 5) %>% 
       addProviderTiles("NASAGIBS.ViirsEarthAtNight2012") 
   })
   
@@ -107,4 +104,3 @@ server <- function(input, output) {
 
 shinyApp(ui, server)
 
-deployApp('/Users/featherlite569/Documents/La Pazionado/La Pazionado')
